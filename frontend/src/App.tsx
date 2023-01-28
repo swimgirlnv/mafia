@@ -1,18 +1,21 @@
 import "./App.css";
-import { useEffect, useState } from "react";
-
-// import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Home from "./Home";
 import Lobby from "./Lobby";
 
-
-
 function App() {
   return (
-    <div className="App">
-      <Home />
-    </div>
+    <Router>
+      <div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/lobby" element={<Lobby />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
