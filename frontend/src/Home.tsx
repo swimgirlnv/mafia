@@ -25,6 +25,20 @@ import {
 
 import { FaUser } from "react-icons/fa";
 
+const ROOM_CODE_LENGTH: number = 4
+
+const generateCode = () => {
+  let result: string = '';
+  const characters: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const charactersLength: number = characters.length;
+  let counter: number = 0;
+  while (counter < ROOM_CODE_LENGTH) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result;
+}
+
 function OpenGameHostModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
@@ -40,7 +54,7 @@ function OpenGameHostModal() {
           {/* <ModalCloseButton /> */}
           <ModalBody>
             <Heading as="h3" mb={10}>
-              Game Code: CODE
+              Game Code: {generateCode()}
             </Heading>
             <Heading size="md" mb={2}>
               Players in Lobby:
