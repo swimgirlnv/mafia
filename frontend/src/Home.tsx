@@ -41,6 +41,8 @@ const generateCode = () => {
 
 function OpenGameHostModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  socket.emit('newUser', { userName, socketID: socket.id });
+
   return (
     <>
       <Button colorScheme="blackAlpha" onClick={onOpen}>

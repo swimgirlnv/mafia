@@ -10,20 +10,35 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: "*",
         methods: ["GET", "POST"],
     },
 });
 
-io.on("connection", (socket) => {
+let users = [];
+
+socketIO.on('connection', (socket) => {
     console.log(`User Connected: ${socket.id}`);
 
     socket.on("join_room", (data) => {
-        socket.join(data);
+        socket.join(data); # change what data...
+        users.push(data);
+        socketIO.emit('newUserResponse', users);
+        // socketIO.emit('messageResponse', data);
     });
 
-    socket.on("send_message", (data) => {
-        socket.to(data.room).emit("receive_message", data);
+    // socket.on("send_message", (data) => {
+    //     socket.to(data.room).emit("receive_message", data);
+    // });
+
+    socket.on('disconnect', () => {
+        console.log('🔥: A user disconnected');
+        //Updates the list of users when a user disconnects from the server
+        users = users.filter((user) => user.socketID !== socket.id);
+        // console.log(users);
+        //Sends the list of users to the client
+        socketIO.emit('newUserResponse', users);
+        socket.disconnect();
     });
 });
 
