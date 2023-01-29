@@ -53,20 +53,11 @@ function OpenGameHostModal(room: string, joinRoom: () => void, name: string) {
   // socket.emit("newUser", { name, socketID: socket.id });
 
   const [players, setPlayers] = useState<string[]>([]);
-
-  // perform an action on opening the modal
-  // const onOpenAction = () => {
-  //   setPlayers([name]);
-  //   onOpen();
-  // };
-
   const newRoom = createRoom(room, joinRoom);
 
   // set the players list to a list of one name, the host's name
   useEffect(() => {
     setPlayers([name]);
-    // console.log("players: ", players);
-    // console.log("name: ", name);
   }, [isOpen]);
   return (
     <>
@@ -78,7 +69,6 @@ function OpenGameHostModal(room: string, joinRoom: () => void, name: string) {
         <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(5px)" />
         <ModalContent>
           <ModalHeader>Hosting a new Game</ModalHeader>
-          {/* <ModalCloseButton /> */}
           <ModalBody>
             <Text mb={1}>
               Hi, <strong>{name}</strong>! To invite players to your game, share
@@ -90,11 +80,30 @@ function OpenGameHostModal(room: string, joinRoom: () => void, name: string) {
             <Heading size="md" mb={2}>
               Players in Lobby:
             </Heading>
-            <List spacing={3}>
+            <List spacing={3} mb={5}>
               {players.map((player) => (
                 <ListItem key={player}>{player}</ListItem>
               ))}
             </List>
+            <ButtonGroup spacing={4}>
+              {players.length >= 4 ? (
+                <Button colorScheme="green">
+                  <a href="/game">Start Game</a>
+                </Button>
+              ) : (
+                <div>
+                  <Button colorScheme="green" isDisabled>
+                    Start Game
+                  </Button>
+                  <Text>
+                    A minimum of 4 players are required to start the game.
+                  </Text>
+                </div>
+              )}
+              <Button colorScheme="red" onClick={onClose}>
+                Cancel Game
+              </Button>
+            </ButtonGroup>
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -128,11 +137,15 @@ function JoinModal(name: string) {
               mb={5}
               onChange={(e) => setRoom(e.target.value)}
             />
-            <a href="/lobby">
-              <Button colorScheme="blackAlpha" mb={4}>
-                Join Game
-              </Button>
-            </a>
+            <Button
+              colorScheme="blackAlpha"
+              mb={4}
+              onClick={() => {
+                alert("Sending request to join game...");
+              }}
+            >
+              Join Game
+            </Button>
           </ModalBody>
         </ModalContent>
       </Modal>
