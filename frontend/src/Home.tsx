@@ -111,7 +111,7 @@ function JoinModal() {
 
 interface HomeProps {
   // setRoom: (room: string) => void;
-  room;
+  room: string;
   joinRoom: () => void;
 }
 
