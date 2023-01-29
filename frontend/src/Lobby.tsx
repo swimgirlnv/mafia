@@ -1,18 +1,5 @@
 import "./App.css";
-import {
-  Heading,
-  Input,
-  Button,
-  Card,
-  CardBody,
-  Stack,
-  ButtonGroup,
-  List,
-  ListItem,
-  ListIcon,
-  OrderedList,
-  UnorderedList,
-} from "@chakra-ui/react";
+import { Heading, Button, ButtonGroup, List, ListItem } from "@chakra-ui/react";
 
 function Lobby() {
   return (
