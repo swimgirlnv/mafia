@@ -24,6 +24,7 @@ import {
 } from "@chakra-ui/react";
 
 import { FaUser } from "react-icons/fa";
+import { useEffect } from "react";
 
 const ROOM_CODE_LENGTH: number = 4
 
@@ -39,8 +40,16 @@ const generateCode = () => {
   return result;
 }
 
-function OpenGameHostModal() {
+const createRoom = (room: string, joinRoom: () => void) => {
+  const code: string = generateCode();
+  room = code;
+  // joinRoom();
+  return code
+}
+
+function OpenGameHostModal(room: string, joinRoom: () => void) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const newRoom = createRoom(room, joinRoom)
   return (
     <>
       <Button colorScheme="blackAlpha" onClick={onOpen}>
@@ -54,7 +63,7 @@ function OpenGameHostModal() {
           {/* <ModalCloseButton /> */}
           <ModalBody>
             <Heading as="h3" mb={10}>
-              Game Code: {generateCode()}
+              Game Code: {newRoom}
             </Heading>
             <Heading size="md" mb={2}>
               Players in Lobby:
@@ -100,7 +109,13 @@ function JoinModal() {
   );
 }
 
-function Home() {
+interface HomeProps {
+  // setRoom: (room: string) => void;
+  room;
+  joinRoom: () => void;
+}
+
+function Home({ room, joinRoom }: HomeProps) {
   return (
     <div className="Home">
       <Heading as="h1" size="2xl" mt={20} mb={20}>
@@ -108,7 +123,7 @@ function Home() {
       </Heading>
       <Input placeholder="Your Name" mb={10} />
       <Stack spacing={10}>
-        {OpenGameHostModal()}
+        {OpenGameHostModal(room, joinRoom)}
         {JoinModal()}
       </Stack>
     </div>
