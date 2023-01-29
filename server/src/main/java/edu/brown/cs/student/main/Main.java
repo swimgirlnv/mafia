@@ -162,6 +162,12 @@ public final class Main {
    Gson gson = new Gson();
    MafiaGenerator generator = new MafiaGenerator();
 
+   db = new Database("data/players.db");
+
+   // Gets random player from database to be mafia?
+    Spark.get("/getMafiaPlayer", (req, res) -> {
+      return gson.toJson(db.getMafiaPlayer());
+    });
 
    Spark.get("/getPlayerDeath/:playerName", (req, res) -> {
      String playerName = req.params(":playerName");

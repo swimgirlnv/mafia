@@ -50,21 +50,21 @@ public class Database {
    * Gets a single random card from the Tarot table.
    * @return The id of the card pulled.
    */
-  public String getCard() {
-    String cardId = "";
+  public String getMafiaPlayer() {
+    String playerName = "";
     try {
-      String sql = "SELECT id FROM Tarot ORDER BY RANDOM() LIMIT 1;";
+      String sql = "SELECT playerName FROM players ORDER BY RANDOM() LIMIT 1;";
       PreparedStatement cardFinder = conn.prepareStatement(sql);
       ResultSet rs = cardFinder.executeQuery();
       // Ensure that we get all the tables in the database with while loop.
       while (rs.next()) {
         // Index based on 1, 2, etc. instead of 0, 1, etc.
-        cardId = rs.getString(1);
+        playerName = rs.getString(1);
       }
     } catch (SQLException e) {
       System.out.println("ERROR: " + e.getMessage());
     }
-    return cardId;
+    return playerName;
   }
 
   /**

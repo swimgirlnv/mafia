@@ -25,8 +25,10 @@ function App() {
     <Router>
       <div>
         <Routes>
-          {/* @ts-ignore */}
-          <Route path="/" element={<Home room={room} joinRoom={() => joinRoom()} />} />
+          <Route
+            path="/"
+            element={<Home room={room.current} joinRoom={() => joinRoom()} />}
+          />
           <Route path="/lobby" element={<Lobby />} />
         </Routes>
       </div>

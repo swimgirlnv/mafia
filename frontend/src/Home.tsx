@@ -23,15 +23,18 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { FaUser } from "react-icons/fa";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+import socket from "./App";
+import axios from "axios";
+import GetPlayer from "./GetPlayer";
 import PersonDied from "./PersonDied";
 
-const ROOM_CODE_LENGTH: number = 4
+const ROOM_CODE_LENGTH: number = 4;
 
 const generateCode = () => {
-  let result: string = '';
-  const characters: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let result: string = "";
+  const characters: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const charactersLength: number = characters.length;
   let counter: number = 0;
   while (counter < ROOM_CODE_LENGTH) {
@@ -39,18 +42,20 @@ const generateCode = () => {
     counter += 1;
   }
   return result;
-}
+};
 
 const createRoom = (room: string, joinRoom: () => void) => {
   const code: string = generateCode();
   room = code;
   // joinRoom();
-  return code
-}
+  return code;
+};
 
-function OpenGameHostModal(room: string, joinRoom: () => void) {
+function OpenGameHostModal(room: string, joinRoom: () => void, name: string) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const newRoom = createRoom(room, joinRoom)
+  // socket.emit("newUser", { name, socketID: socket.id });
+
+  const newRoom = createRoom(room, joinRoom);
   return (
     <>
       <Button colorScheme="blackAlpha" onClick={onOpen}>
@@ -63,6 +68,10 @@ function OpenGameHostModal(room: string, joinRoom: () => void) {
           <ModalHeader>Hosting a new Game</ModalHeader>
           {/* <ModalCloseButton /> */}
           <ModalBody>
+            <Text mb={1}>
+              Hi, <strong>{name}</strong>! To invite players to your game, share
+              the following game code with them:
+            </Text>
             <Heading as="h3" mb={10}>
               Game Code: {newRoom}
             </Heading>
@@ -80,8 +89,9 @@ function OpenGameHostModal(room: string, joinRoom: () => void) {
   );
 }
 
-function JoinModal() {
+function JoinModal(name: string) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [room, setRoom] = useState<string>("");
   return (
     <>
       <Button colorScheme="blackAlpha" onClick={onOpen}>
@@ -94,10 +104,17 @@ function JoinModal() {
           <ModalHeader>Joining a Game</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <Text mb={1}>
+              Hi, <strong>{name}</strong>!
+            </Text>
             <Text mb={3}>
               Ask the Host for the four-digit Game Code and enter it below:
             </Text>
-            <Input placeholder="Game Code" mb={5} />
+            <Input
+              placeholder="Game Code"
+              mb={5}
+              onChange={(e) => setRoom(e.target.value)}
+            />
             <a href="/lobby">
               <Button colorScheme="blackAlpha" mb={4}>
                 Join Game
@@ -110,6 +127,7 @@ function JoinModal() {
   );
 }
 
+
 interface HomeProps {
   // setRoom: (room: string) => void;
   room: string;
@@ -117,16 +135,23 @@ interface HomeProps {
 }
 
 function Home({ room, joinRoom }: HomeProps) {
+  const [name, setName] = useState<string>("");
   return (
     <div className="Home">
       <Heading as="h1" size="2xl" mt={20} mb={20}>
         Mafia
       </Heading>
-      <Input placeholder="Your Name" mb={10} />
+      <Input
+        placeholder="Your Name"
+        mb={10}
+        onChange={(e) => setName(e.target.value)}
+      />
       <Stack spacing={10}>
-        {OpenGameHostModal(room, joinRoom)}
-        {JoinModal()}
+        {OpenGameHostModal(room, joinRoom, name)}
+        {JoinModal(name)}
       </Stack>
+
+      <GetPlayer></GetPlayer>
       <PersonDied></PersonDied>
     </div>
   );
