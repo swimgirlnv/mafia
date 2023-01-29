@@ -25,6 +25,7 @@ import {
 
 import { FaUser } from "react-icons/fa";
 import { useEffect } from "react";
+import PersonDied from "./PersonDied";
 
 const ROOM_CODE_LENGTH: number = 4
 
@@ -126,6 +127,7 @@ function Home({ room, joinRoom }: HomeProps) {
         {OpenGameHostModal(room, joinRoom)}
         {JoinModal()}
       </Stack>
+      <PersonDied></PersonDied>
     </div>
   );
 }
