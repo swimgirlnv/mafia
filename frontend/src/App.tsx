@@ -5,12 +5,11 @@ import io from "socket.io-client";
 // @ts-ignore
 const socket = io.connect("http://localhost:3001");
 
-// import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Home from "./Home";
 import Lobby from "./Lobby";
+import Game from "./Game";
 
 function App() {
   const room = useRef<string>("");
@@ -29,7 +28,8 @@ function App() {
             path="/"
             element={<Home room={room.current} joinRoom={() => joinRoom()} />}
           />
-          <Route path="/lobby" element={<Lobby />} />
+          {/* <Route path="/lobby" element={<Lobby />} /> */}
+          <Route path="/game" element={<Game />} />
         </Routes>
       </div>
     </Router>
