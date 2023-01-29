@@ -11,6 +11,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Home from "./Home";
 import Lobby from "./Lobby";
+import Game from "./Game";
 
 function App() {
   const room = useRef<string>("");
@@ -30,6 +31,7 @@ function App() {
             element={<Home room={room.current} joinRoom={() => joinRoom()} />}
           />
           <Route path="/lobby" element={<Lobby />} />
+          <Route path="/game" element={<Game />} />
         </Routes>
       </div>
     </Router>

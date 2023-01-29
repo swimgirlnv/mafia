@@ -25,7 +25,7 @@ import {
 
 import { useEffect, useState } from "react";
 
-import socket from "./App";
+// import socket from "./App";
 
 const ROOM_CODE_LENGTH: number = 4;
 
@@ -52,7 +52,22 @@ function OpenGameHostModal(room: string, joinRoom: () => void, name: string) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   // socket.emit("newUser", { name, socketID: socket.id });
 
+  const [players, setPlayers] = useState<string[]>([]);
+
+  // perform an action on opening the modal
+  // const onOpenAction = () => {
+  //   setPlayers([name]);
+  //   onOpen();
+  // };
+
   const newRoom = createRoom(room, joinRoom);
+
+  // set the players list to a list of one name, the host's name
+  useEffect(() => {
+    setPlayers([name]);
+    // console.log("players: ", players);
+    // console.log("name: ", name);
+  }, [isOpen]);
   return (
     <>
       <Button colorScheme="blackAlpha" onClick={onOpen}>
@@ -76,8 +91,9 @@ function OpenGameHostModal(room: string, joinRoom: () => void, name: string) {
               Players in Lobby:
             </Heading>
             <List spacing={3}>
-              <ListItem>Player 1</ListItem>
-              <ListItem>Player 2</ListItem>
+              {players.map((player) => (
+                <ListItem key={player}>{player}</ListItem>
+              ))}
             </List>
           </ModalBody>
         </ModalContent>
